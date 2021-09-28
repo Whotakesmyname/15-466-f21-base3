@@ -245,7 +245,7 @@ void compute_pan_from_listener_and_position(
 		// but I'm going to use linear because it's sounds better to me.
 		// (feel free to change it, of course)
 		//want att = 0.5f at distance == half_volume_radius
-		float att = 1.0f / (1.0f + (distance / source_half_radius));
+		float att = 1.0f / (1.0f + std::pow((distance / source_half_radius), 2.f));
 		*left *= att;
 		*right *= att;
 	}

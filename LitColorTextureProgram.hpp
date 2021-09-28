@@ -22,6 +22,7 @@ struct LitColorTextureProgram {
 	GLuint OBJECT_TO_LIGHT_mat4x3 = -1U;
 	GLuint NORMAL_TO_LIGHT_mat3 = -1U;
 	GLuint FOG_MAX_VIS_DISTANCE_float = -1U;
+	GLuint FOG_COLOR_vec3 = -1U;
 
 	//lighting:
 	GLuint LIGHT_TYPE_int = -1U;
