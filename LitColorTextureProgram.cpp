@@ -75,6 +75,7 @@ LitColorTextureProgram::LitColorTextureProgram() {
 		"uniform vec3 LIGHT_DIRECTION;\n"
 		"uniform vec3 LIGHT_ENERGY;\n"
 		"uniform float LIGHT_CUTOFF;\n"
+		"uniform float FOG_MAX_VIS_DISTANCE;\n"
 		"in vec3 position;\n"
 		"in vec3 normal;\n"
 		"in vec4 color;\n"
@@ -103,7 +104,9 @@ LitColorTextureProgram::LitColorTextureProgram() {
 		"		e = max(0.0, dot(n,-LIGHT_DIRECTION)) * LIGHT_ENERGY;\n"
 		"	}\n"
 		"	vec4 albedo = texture(TEX, texCoord) * color;\n"
-		"	fragColor = vec4(e*albedo.rgb, albedo.a);\n"
+		"   float distance = length(position);\n"
+		"   float alpha = clamp((distance - 1.f)/(FOG_MAX_VIS_DISTANCE - 1.f), 0.f, 1.f);\n"
+		"	fragColor = mix(vec4(e*albedo.rgb, albedo.a), vec4(1.f), alpha);\n"
 		"}\n"
 	);
 	//As you can see above, adjacent strings in C/C++ are concatenated.
@@ -119,6 +122,7 @@ LitColorTextureProgram::LitColorTextureProgram() {
 	OBJECT_TO_CLIP_mat4 = glGetUniformLocation(program, "OBJECT_TO_CLIP");
 	OBJECT_TO_LIGHT_mat4x3 = glGetUniformLocation(program, "OBJECT_TO_LIGHT");
 	NORMAL_TO_LIGHT_mat3 = glGetUniformLocation(program, "NORMAL_TO_LIGHT");
+	FOG_MAX_VIS_DISTANCE_float = glGetUniformLocation(program, "FOG_MAX_VIS_DISTANCE");
 
 	LIGHT_TYPE_int = glGetUniformLocation(program, "LIGHT_TYPE");
 	LIGHT_LOCATION_vec3 = glGetUniformLocation(program, "LIGHT_LOCATION");

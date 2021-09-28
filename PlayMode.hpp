@@ -28,19 +28,23 @@ struct PlayMode : Mode {
 	//local copy of the game scene (so code can change it during gameplay):
 	Scene scene;
 
-	//hexapod leg to wobble:
-	Scene::Transform *hip = nullptr;
-	Scene::Transform *upper_leg = nullptr;
-	Scene::Transform *lower_leg = nullptr;
-	glm::quat hip_base_rotation;
-	glm::quat upper_leg_base_rotation;
-	glm::quat lower_leg_base_rotation;
-	float wobble = 0.0f;
+	// scene parameters
+	glm::vec3 ambient_light = glm::vec3(.8f);
+	float fog_max_vis_distance = 10.f;
 
-	glm::vec3 get_leg_tip_position();
+	// camera parameters: yaw, pitch
+	glm::vec2 cam_params = glm::vec2(0.f, glm::pi<float>()/2);
+	// cache yaw quat
+	glm::quat cam_yaw = glm::quat(1.f, 0.f, 0.f, 0.f);
 
-	//music coming from the tip of the leg (as a demonstration):
-	std::shared_ptr< Sound::PlayingSample > leg_tip_loop;
+	// transforms
+	Scene::Transform *world = nullptr;
+
+	//sound handlers
+	std::shared_ptr<Sound::PlayingSample> footstep_loop;
+	bool footstep_playing = false;
+	std::shared_ptr<Sound::PlayingSample> blizzard_loop;
+	bool blizzard_supressed = false;
 	
 	//camera:
 	Scene::Camera *camera = nullptr;
