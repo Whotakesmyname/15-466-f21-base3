@@ -54,6 +54,10 @@ Load< Sound::Sample > pickup_sample(LoadTagDefault, []() -> Sound::Sample const 
 	return new Sound::Sample(data_path("pickup.opus"));
 });
 
+Load< Sound::Sample > shiver_sample(LoadTagDefault, []() -> Sound::Sample const * {
+	return new Sound::Sample(data_path("shivering.opus"));
+});
+
 PlayMode::PlayMode() : scene(*scene_res) {
 	//get pointers to leg for convenience:
 	for (auto &transform : scene.transforms) {
@@ -199,6 +203,7 @@ void PlayMode::update(float elapsed) {
 			light_intensity = std::max(0.f, light_intensity - .2f);
 			fog_max_vis_distance = std::max(10.f, fog_max_vis_distance - 5.f);
 			Sound::play(*pickup_sample);
+			if (light_intensity < .5f) Sound::play(*shiver_sample);
 			regenerate_radio();
 		}
 	}
