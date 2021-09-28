@@ -189,21 +189,21 @@ void PlayMode::update(float elapsed) {
 		// regenerate helper function
 		auto regenerate_radio = [this]() {
 			// regenerate a radio 30m away from player
-			const float distance = 30.f;
 			float theta = (static_cast<float>(std::rand()) / RAND_MAX) * 2 * glm::pi<float>();
-			world->position.x = distance * glm::cos(theta);
-			world->position.y = distance * glm::sin(theta);
+			world->position.x = radio_distance * glm::cos(theta);
+			world->position.y = radio_distance * glm::sin(theta);
 		};
 
 		// if radio missed, regenerate
 		float distance = glm::length(radio_pos);
-		if (distance > 30.f) {
+		if (distance > radio_distance + 5.f) {
 			regenerate_radio();
 		} else if (distance < .5f) {
 			light_intensity = std::max(0.f, light_intensity - .2f);
-			fog_max_vis_distance = std::max(10.f, fog_max_vis_distance - 5.f);
+			fog_max_vis_distance = std::max(10.f, fog_max_vis_distance - 10.f);
+			radio_distance = std::min(50.f, radio_distance + 10.f);
 			Sound::play(*pickup_sample);
-			if (light_intensity < .5f) Sound::play(*shiver_sample);
+			if (light_intensity < .5f) Sound::play(*shiver_sample, 2.f);
 			regenerate_radio();
 		}
 	}

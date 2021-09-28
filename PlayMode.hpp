@@ -34,7 +34,9 @@ struct PlayMode : Mode {
 	const glm::vec3 ambient_light_max = glm::vec3(.8f);
 	glm::vec3 sky_light = glm::vec3(1.f);
 	const glm::vec3 sky_light_max = glm::vec3(1.f);
-	float fog_max_vis_distance = 20.f;
+	float fog_max_vis_distance = 40.f;
+
+	float radio_distance = 10.f;
 
 	// camera parameters: yaw, pitch
 	glm::vec2 cam_params = glm::vec2(0.f, glm::pi<float>()/2);
